@@ -1,0 +1,313 @@
+{
+  "name": "AI News Summarizer using n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "718d641e-0ed8-436c-a7e4-85b6d8b1e0f3",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        368,
+        0
+      ],
+      "id": "65238c68-7ef1-4a28-8cbf-fe313cc4d284",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "content",
+              "renameField": true,
+              "outputFieldName": "articles"
+            },
+            {
+              "fieldToAggregate": "title",
+              "renameField": true,
+              "outputFieldName": "titles"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        592,
+        0
+      ],
+      "id": "c7183e14-089c-4eaf-a0c4-b242fa780620",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create today's AI and technology news digest from the following articles.\n\n{{$json.articles}}\n\nFormat:\n\n📰 Daily AI & Tech News\n\n1. Headline\nSummary\n\n2. Headline\nSummary\n\nEnd with:\n\n\"Have a productive day!\"",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a professional technology news editor.  Your task is to summarize multiple news articles into a concise daily news digest.  Rules:  - Keep the summary factual. - Avoid repeating information. - Use simple language. - Produce a readable report. - Include only the most important information. - Maximum 250 words.  Return plain text only."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        832,
+        0
+      ],
+      "id": "0574d7ed-0fce-4a06-ac93-b36b82a2f62e",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        832,
+        144
+      ],
+      "id": "70246283-b02e-45da-a4b6-b1ab4bd0332b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "p6aCPHm0mKzknowX",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "5518864435",
+        "text": "={{ $json.Summary }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1424,
+        0
+      ],
+      "id": "273785b3-b67f-4776-9fbd-a84a3020d209",
+      "name": "Send a text message",
+      "webhookId": "1f9a7842-162f-4f00-9277-bd86cf4b9787",
+      "credentials": {
+        "telegramApi": {
+          "id": "fp3gBtdPu07VAHp7",
+          "name": "AI News Summarizer Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1NBEGlgBQQ62JAZHvg8X5RXP0-ZXW3nmiUlQ9jwAV21A",
+          "mode": "list",
+          "cachedResultName": "AI News Archive",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NBEGlgBQQ62JAZHvg8X5RXP0-ZXW3nmiUlQ9jwAV21A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NBEGlgBQQ62JAZHvg8X5RXP0-ZXW3nmiUlQ9jwAV21A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $now.format('yyyy-MM-dd HH:mm') }}",
+            "Headlines": "={{ $('Aggregate').item.json.titles.join(', ') }}",
+            "Summary": "={{ $json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Headlines",
+              "displayName": "Headlines",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        0
+      ],
+      "id": "b1805544-33f1-4d32-813d-6ea6a85d9a66",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "qtNupNmEU4VCVfOQ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://feeds.feedburner.com/TheHackersNews",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        0
+      ],
+      "id": "78024580-2f8d-48b5-a59d-ed6e14182e94",
+      "name": "RSS Read"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Manila",
+    "saveExecutionProgress": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "3234463c-1969-4309-afd6-3c71c9cd77fc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8109642ab6846a9cf1618de304921f5663481ec8cdaee6a52dd360d6de75a743"
+  },
+  "id": "rYgXr9sZR1AS8zs2",
+  "tags": []
+}
