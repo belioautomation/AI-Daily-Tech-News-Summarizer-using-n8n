@@ -1,47 +1,24 @@
-# AI Daily Tech News Summarizer using n8n
+# 📰 AI Daily Tech News Summarizer using n8n
 
-An AI-powered automation workflow built with **n8n** that fetches the latest cybersecurity and technology news from an RSS feed, summarizes it using **Google Gemini**, stores the results in **Google Sheets**, and automatically delivers a daily digest to **Telegram**.
+## 📌 Project Overview
 
----
+AI Daily Tech News Summarizer is an AI-powered automation workflow built with **n8n**, **Google Gemini AI**, **RSS Feed**, **Google Sheets**, and **Telegram**. It automatically retrieves the latest cybersecurity and technology news, summarizes multiple articles using AI, stores the summaries in Google Sheets, and delivers a daily news digest directly to Telegram.
 
-## 📌 Overview
-
-This workflow automates the process of staying up to date with technology news by:
-
-* Retrieving the latest articles from an RSS feed.
-* Selecting the newest articles.
-* Organizing the data into a format suitable for AI.
-* Generating concise summaries using Google Gemini.
-* Saving summaries for future reference in Google Sheets.
-* Sending the summarized news directly to Telegram.
-
-Perfect for developers, cybersecurity enthusiasts, students, and anyone who wants an AI-curated daily news digest.
+Built as part of my **30-Day n8n Automation Portfolio**, this project demonstrates AI-powered content summarization, RSS feed processing, workflow automation, and automated reporting.
 
 ---
 
-## 🚀 Features
+## 🎯 Objectives
 
-* ⏰ Automatic scheduled execution
-* 📰 Retrieves latest tech & cybersecurity news
-* 🤖 AI-powered summarization with Google Gemini
-* 📊 Stores summaries in Google Sheets
-* 📲 Sends formatted news digest to Telegram
-* 💯 Fully automated workflow
-* 🆓 Uses free services (within available free tiers)
+* Automate daily technology news collection
+* Summarize multiple news articles using AI
+* Archive AI-generated summaries
+* Deliver daily news digests to Telegram
+* Build a portfolio-ready AI automation workflow
 
 ---
 
-## 🛠 Tech Stack
-
-* **n8n**
-* **Google Gemini**
-* **RSS Feed**
-* **Google Sheets API**
-* **Telegram Bot API**
-
----
-
-## 📂 Workflow
+## 🏗️ Workflow Architecture
 
 ```text
 Schedule Trigger
@@ -67,19 +44,21 @@ Telegram
 
 ---
 
-## ⚙️ Workflow Explanation
+## ⚙️ Workflow Implementation
 
 ### 1. Schedule Trigger
 
-Runs automatically every day at a specified time.
+Runs the workflow automatically every day at a scheduled time.
 
 ---
 
 ### 2. RSS Feed Read
 
-Retrieves the latest articles from:
+Retrieves the latest cybersecurity and technology news from an RSS feed.
 
-```
+Example source:
+
+```text
 https://feeds.feedburner.com/TheHackersNews
 ```
 
@@ -87,7 +66,7 @@ https://feeds.feedburner.com/TheHackersNews
 
 ### 3. Limit
 
-Limits the number of articles processed (e.g., latest 5).
+Selects the latest news articles (for example, the most recent five) for processing.
 
 ---
 
@@ -99,19 +78,17 @@ Combines article titles and content into a structured format suitable for AI sum
 
 ### 5. Google Gemini (Basic LLM Chain)
 
-Generates a concise news digest by:
+Analyzes the collected articles and generates a concise daily news digest by:
 
 * Summarizing each article
-* Highlighting key points# AI-Daily-Tech-News-Summarizer-using-n8n
-An AI-powered automation workflow built with n8n that fetches the latest cybersecurity and technology news from an RSS feed, summarizes it using Google Gemini, stores the results in Google Sheets, and automatically delivers a daily digest to Telegram.
-
-* Producing a readable daily report
+* Highlighting key information
+* Producing a readable report
 
 ---
 
 ### 6. Google Sheets
 
-Archives the generated summaries.
+Stores AI-generated summaries for future reference.
 
 Example columns:
 
@@ -122,125 +99,112 @@ Example columns:
 
 ### 7. Telegram
 
-Sends the AI-generated news digest directly to Telegram.
+Sends the summarized daily news digest directly to Telegram.
 
-Example output:
+Example:
 
 ```text
 📰 Daily AI & Tech News
 
 1. Oracle Security Flaw Under Active Exploitation
 
-A critical Oracle Payments vulnerability (CVE-2026-46817) is currently being exploited. Attackers can gain unauthorized control of vulnerable Oracle instances.
+A critical Oracle vulnerability is currently being exploited, allowing attackers to compromise vulnerable systems.
 
 2. Malicious AI Chrome Extension Removed
 
-Microsoft identified a fake Perplexity AI Chrome extension that intercepted user searches before redirecting them to legitimate websites.
+Microsoft identified and removed a fake AI browser extension that intercepted user searches.
 
 3. WhatsApp Introduces Usernames
 
-WhatsApp has started rolling out usernames to improve privacy by allowing users to connect without sharing phone numbers.
+WhatsApp is rolling out usernames to improve user privacy without exposing phone numbers.
 
-Have a productive day!
+🤖 Generated automatically with n8n.
 ```
 
 ---
 
-## 📁 Project Structure
+## 🛠️ Technologies Used
 
-```
+* n8n
+* Google Gemini AI
+* RSS Feed
+* Google Sheets API
+* Telegram Bot API
+
+---
+
+## 📁 Repository Structure
+
+```text
 AI-News-Summarizer/
 │
 ├── README.md
 ├── workflow.json
-└── screenshots/
-    ├── workflow.png
-    ├── telegram-output.png
-    └── google-sheets.png
+│
+├── screenshots/
+│   ├── workflow.png
+│   ├── telegram-output.png
+│   └── google-sheets.png
+│
+└── assets/
 ```
 
 ---
 
 ## 📸 Screenshots
 
-Include screenshots such as:
+Include the following screenshots:
 
-* Workflow Editor
-* Google Sheets output
-* Telegram notification
-
-Example:
-
-```
-screenshots/
-    workflow.png
-    telegram-output.png
-    google-sheets.png
-```
+* Complete Workflow
+* Google Sheets Output
+* Telegram Notification
 
 ---
 
-## 💡 Use Cases
+## 🚀 Key Features
 
-* Daily cybersecurity updates
-* Technology news digest
-* AI-powered content summarization
-* Learning n8n automation
-* Portfolio project for automation and AI
-
----
-
-## 🔮 Future Improvements
-
-* Support multiple RSS feeds
-* Remove duplicate articles
-* Categorize news by topic (AI, Security, Cloud, etc.)
-* Generate email newsletters
-* Save summaries to Notion
-* Publish summaries to Discord or Slack
-* Translate summaries into multiple languages
+* ✅ Scheduled Workflow Automation
+* ✅ RSS Feed Processing
+* ✅ AI-Powered News Summarization
+* ✅ Google Sheets Integration
+* ✅ Telegram Notifications
+* ✅ Automated Daily News Digest
+* ✅ Fully Automated Workflow
 
 ---
 
-## 📚 What I Learned
+## 🎓 Lessons Learned
 
-This project helped me gain practical experience with:
+Through this project, I gained experience in:
 
-* Workflow automation using n8n
-* Integrating RSS feeds
-* Prompt engineering with Google Gemini
-* Google Sheets automation
-* Telegram Bot integration
-* Data aggregation and transformation
-* Building end-to-end AI-powered workflows
-
----
-
-## 🏷 Skills Demonstrated
-
-* n8n
-* Workflow Automation
-* Google Gemini AI
-* Google Sheets API
-* Telegram Bot API
-* RSS Feed Processing
-* Prompt Engineering
-* Data Transformation
-* API Integration
-* No-Code / Low-Code Automation
+* Building AI-powered automation workflows
+* Integrating RSS feeds with n8n
+* Using Google Gemini for text summarization
+* Aggregating and processing structured data
+* Automating Google Sheets logging
+* Delivering AI-generated reports through Telegram
 
 ---
 
-## 🤝 Contributing
+## 📈 Impact
 
-Contributions, suggestions, and improvements are welcome. Feel free to fork this repository and submit a pull request.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
+This workflow automates the collection and summarization of technology news, helping users stay informed without manually browsing multiple sources. It demonstrates how AI and workflow automation can simplify information gathering and daily reporting.
 
 ---
 
-# ⭐ If you found this project useful, consider giving it a star!
+## 📜 License
+
+MIT License
+
+---
+
+## 👨‍💻 Author
+
+**Belio C. Sinangote**
+
+BS Information Technology Student
+Cebu Technological University (CTU)
+
+GitHub: [https://github.com/belioautomation](https://github.com/belioautomation)
+
+This project is part of my **30-Day n8n Automation Portfolio**, showcasing practical workflow automation using n8n, AI, APIs, and automation best practices.
