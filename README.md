@@ -1,210 +1,584 @@
-# 📰 AI Daily Tech News Summarizer using n8n
+# 📰 AI Daily Tech News Summarizer — n8n Automation
 
-## 📌 Project Overview
+![n8n](https://img.shields.io/badge/n8n-Automation-orange)
+![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini-blue)
+![RSS Feed](https://img.shields.io/badge/Data-RSS%20Feed-green)
+![JavaScript](https://img.shields.io/badge/Code-JavaScript-yellow)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-AI Daily Tech News Summarizer is an AI-powered automation workflow built with **n8n**, **Google Gemini AI**, **RSS Feed**, **Google Sheets**, and **Telegram**. It automatically retrieves the latest cybersecurity and technology news, summarizes multiple articles using AI, stores the summaries in Google Sheets, and delivers a daily news digest directly to Telegram.
+An AI-powered news aggregation and summarization workflow built using **n8n**, **Google Gemini AI**, **RSS Feed**, **Google Sheets**, and **Telegram Bot API**.
 
-Built as part of my **30-Day n8n Automation Portfolio**, this project demonstrates AI-powered content summarization, RSS feed processing, workflow automation, and automated reporting.
+This system automatically collects the latest cybersecurity and technology news, processes multiple articles using artificial intelligence, generates concise summaries, stores the results in Google Sheets, and delivers a daily technology digest directly to Telegram.
 
----
-
-## 🎯 Objectives
-
-* Automate daily technology news collection
-* Summarize multiple news articles using AI
-* Archive AI-generated summaries
-* Deliver daily news digests to Telegram
-* Build a portfolio-ready AI automation workflow
+**Stack:**
+n8n · RSS Feed · Google Gemini AI · Google Sheets · Telegram Bot · JavaScript · AI Automation
 
 ---
 
-## 🏗️ Workflow Architecture
+# 🎯 Project Overview
 
-```text
-Schedule Trigger
-        │
-        ▼
-RSS Feed Read
-        │
-        ▼
-Limit
-        │
-        ▼
-Aggregate
-        │
-        ▼
-Google Gemini (Basic LLM Chain)
-        │
-        ▼
-Google Sheets
-        │
-        ▼
-Telegram
+## Problem
+
+Keeping up with rapidly changing technology and cybersecurity news requires manually checking multiple websites every day.
+
+Common challenges:
+
+* Time-consuming news searching
+* Difficulty tracking multiple sources
+* Information overload
+* Missing important cybersecurity updates
+* Manual creation of daily reports
+
+Examples:
+
+* Security vulnerabilities
+* AI technology updates
+* Software releases
+* Industry announcements
+
+---
+
+## Solution
+
+This project creates an automated AI-powered news monitoring system by:
+
+1. Running automatically on a scheduled time
+2. Fetching the latest technology news through RSS feeds
+3. Selecting relevant articles for processing
+4. Combining multiple articles into structured data
+5. Using Google Gemini AI to generate summaries
+6. Saving generated reports into Google Sheets
+7. Sending daily news digests through Telegram
+
+The workflow acts as an intelligent news assistant that automatically gathers, summarizes, and delivers important technology updates.
+
+---
+
+# ✨ Features
+
+## News Collection
+
+✅ Automated daily news retrieval
+✅ RSS feed integration
+✅ Cybersecurity and technology monitoring
+✅ Latest article extraction
+
+## Artificial Intelligence
+
+✅ Google Gemini AI summarization
+✅ Multi-article analysis
+✅ AI-generated news digest
+✅ Key information extraction
+
+## Data Management
+
+✅ Google Sheets news archive
+✅ Structured summary storage
+✅ Automated reporting database
+
+## Notifications
+
+✅ Telegram daily digest delivery
+✅ Real-time automated reports
+✅ Mobile-friendly news updates
+
+---
+
+# 🗺️ System Architecture
+
+```mermaid
+flowchart TD
+
+A["⏰ Schedule Trigger"]
+
+--> B["📰 RSS Feed Reader"]
+
+B --> C["🔢 Limit Articles"]
+
+C --> D["📚 Aggregate News Data"]
+
+D --> E["🤖 Google Gemini AI"]
+
+E --> F["📊 Google Sheets"]
+
+F --> G["📱 Telegram Notification"]
+
 ```
 
 ---
 
-## ⚙️ Workflow Implementation
+# 🏗️ Workflow Implementation
 
-### 1. Schedule Trigger
+# Workflow 1: AI News Summarization Pipeline
 
-Runs the workflow automatically every day at a scheduled time.
+## Node 1 — Schedule Trigger
+
+### Purpose
+
+Automatically starts the workflow at a predefined schedule.
+
+Configuration:
+
+```text
+Trigger:
+
+Daily Schedule
+
+
+Execution:
+
+Every Day
+```
+
+Example:
+
+```text
+Run Time:
+
+08:00 AM Daily
+```
 
 ---
 
-### 2. RSS Feed Read
+# Node 2 — RSS Feed Read
 
-Retrieves the latest cybersecurity and technology news from an RSS feed.
+### Purpose
 
-Example source:
+Collect the latest cybersecurity and technology news from external RSS sources.
+
+Example Source:
 
 ```text
 https://feeds.feedburner.com/TheHackersNews
 ```
 
----
+Captured Information:
 
-### 3. Limit
+| Field          | Description         |
+| -------------- | ------------------- |
+| Title          | News headline       |
+| Link           | Article URL         |
+| Content        | Article description |
+| Published Date | Release timestamp   |
 
-Selects the latest news articles (for example, the most recent five) for processing.
+Example Output:
 
----
+```json
+{
+"title":
+"Critical Security Vulnerability Discovered",
 
-### 4. Aggregate
-
-Combines article titles and content into a structured format suitable for AI summarization.
-
----
-
-### 5. Google Gemini (Basic LLM Chain)
-
-Analyzes the collected articles and generates a concise daily news digest by:
-
-* Summarizing each article
-* Highlighting key information
-* Producing a readable report
-
----
-
-### 6. Google Sheets
-
-Stores AI-generated summaries for future reference.
-
-Example columns:
-
-| Date | Headlines | Summary |
-| ---- | --------- | ------- |
+"content":
+"A new vulnerability affects multiple systems..."
+}
+```
 
 ---
 
-### 7. Telegram
+# Node 3 — Limit
 
-Sends the summarized daily news digest directly to Telegram.
+### Purpose
+
+Controls the number of articles processed by the AI model.
+
+Example Configuration:
+
+```text
+Maximum Items:
+
+5 Articles
+```
+
+Benefits:
+
+* Reduces AI processing cost
+* Keeps summaries focused
+* Improves report readability
+
+---
+
+# Node 4 — Aggregate
+
+### Purpose
+
+Combines multiple RSS articles into a structured format before sending them to Google Gemini AI.
+
+Processing:
+
+```text
+Multiple News Articles
+
+        ↓
+
+Data Aggregation
+
+        ↓
+
+Combined AI Prompt
+```
+
+Example:
+
+```json
+[
+{
+"title":
+"AI Security Update",
+
+"content":
+"Researchers discovered..."
+},
+
+{
+"title":
+"New Software Release",
+
+"content":
+"Company announced..."
+}
+]
+```
+
+---
+
+# Node 5 — Google Gemini AI (Basic LLM Chain)
+
+### Purpose
+
+Analyze and summarize collected news articles using artificial intelligence.
+
+The AI performs:
+
+* Article summarization
+* Key point extraction
+* Information organization
+* Daily digest generation
+
+Example Response:
+
+```text
+📰 Daily AI & Tech News
+
+
+1. AI Security Update
+
+Researchers discovered a new security issue affecting AI systems.
+
+
+2. Major Software Release
+
+A technology company released a new update improving system performance.
+
+
+🤖 Generated automatically using Google Gemini AI.
+```
+
+---
+
+# Node 6 — Google Sheets
+
+### Purpose
+
+Store AI-generated news summaries for future reference and tracking.
+
+Database Structure:
+
+| Field     | Description           |
+| --------- | --------------------- |
+| Date      | Report date           |
+| Headlines | Collected news titles |
+| Summary   | AI-generated digest   |
+
+Example:
+
+| Date       | Headlines             | Summary                   |
+| ---------- | --------------------- | ------------------------- |
+| 2026-07-11 | Cybersecurity Updates | AI-generated daily report |
+
+---
+
+# Node 7 — Telegram Notification
+
+### Purpose
+
+Deliver the generated daily technology digest directly to Telegram.
 
 Example:
 
 ```text
 📰 Daily AI & Tech News
 
-1. Oracle Security Flaw Under Active Exploitation
 
-A critical Oracle vulnerability is currently being exploited, allowing attackers to compromise vulnerable systems.
+1. Oracle Security Vulnerability
 
-2. Malicious AI Chrome Extension Removed
+A critical security issue was discovered and requires immediate attention.
 
-Microsoft identified and removed a fake AI browser extension that intercepted user searches.
 
-3. WhatsApp Introduces Usernames
+2. AI Browser Extension Threat
 
-WhatsApp is rolling out usernames to improve user privacy without exposing phone numbers.
+A malicious AI extension was removed after collecting user information.
 
-🤖 Generated automatically with n8n.
+
+3. New Technology Update
+
+A company introduced new features improving user privacy.
+
+
+🤖 Automatically generated using n8n + Google Gemini AI.
 ```
 
 ---
 
-## 🛠️ Technologies Used
+# 🔐 Credentials Required
+
+| Service              | Purpose                  |
+| -------------------- | ------------------------ |
+| RSS Feed Source      | Retrieve technology news |
+| Google Gemini API    | AI summarization         |
+| Google Sheets OAuth2 | Store summaries          |
+| Telegram Bot API     | Send notifications       |
+| n8n Instance         | Workflow execution       |
+
+---
+
+# ⚙️ Setup Guide
+
+## 1. Configure Schedule Trigger
+
+Set the execution schedule.
+
+Required:
+
+```text
+Schedule Time
+
+Timezone Configuration
+
+Workflow Activation
+```
+
+---
+
+## 2. Configure RSS Feed
+
+Add an RSS source.
+
+Example:
+
+```text
+Cybersecurity News RSS Feed
+
+https://feeds.feedburner.com/TheHackersNews
+```
+
+Test article retrieval.
+
+---
+
+## 3. Configure Google Gemini AI
+
+Create Gemini API credentials.
+
+Required:
+
+```text
+Google AI API Key
+
+Gemini Model Access
+```
+
+Test AI summarization output.
+
+---
+
+## 4. Create Google Sheets Database
+
+Create:
+
+```text
+AI Tech News Archive
+```
+
+Columns:
+
+```text
+Date
+
+Headlines
+
+Summary
+```
+
+---
+
+## 5. Configure Telegram Bot
+
+Steps:
+
+1. Create Telegram bot using BotFather
+2. Copy bot token
+3. Add Telegram credential in n8n
+4. Configure chat ID
+
+---
+
+## 6. Import Workflow
+
+Import:
+
+```text
+workflow.json
+```
+
+Configure:
+
+* RSS Feed
+* Gemini API
+* Google Sheets
+* Telegram Bot
+
+Activate workflow.
+
+---
+
+# 🧪 Testing Checklist
+
+| Test Case                 | Expected Result         |
+| ------------------------- | ----------------------- |
+| Schedule Trigger runs     | Workflow starts         |
+| RSS retrieves articles    | News data received      |
+| Limit filters articles    | Correct number selected |
+| Aggregate combines data   | AI-ready format created |
+| Gemini processes articles | Summary generated       |
+| Google Sheets updates     | Report saved            |
+| Telegram sends message    | News digest received    |
+
+---
+
+# 📁 Repository Structure
+
+```text
+AI-Daily-Tech-News-Summarizer/
+
+│
+├── README.md
+│
+├── workflow.json
+│
+├── screenshots/
+│   │
+│   ├── workflow.png
+│   ├── rss-feed-output.png
+│   ├── gemini-output.png
+│   ├── google-sheets.png
+│   ├── telegram-notification.png
+│   └── execution-result.png
+│
+└── LICENSE
+```
+
+---
+
+# 📸 Screenshots
+
+Recommended screenshots:
+
+* Complete workflow
+* RSS Feed output
+* Gemini AI summary generation
+* Google Sheets records
+* Telegram news digest
+* Workflow execution result
+
+---
+
+# 🚀 Future Improvements
+
+| Feature                | Implementation                                      |
+| ---------------------- | --------------------------------------------------- |
+| Multiple RSS Sources   | Monitor additional technology websites              |
+| AI News Categorization | Classify AI, cybersecurity, hardware, software news |
+| Sentiment Analysis     | Analyze technology trends                           |
+| Web Dashboard          | Create analytics dashboard                          |
+| Email Newsletter       | Send daily reports through Gmail                    |
+| Notion Integration     | Create personal knowledge database                  |
+| AI Trend Detection     | Identify emerging technology topics                 |
+
+---
+
+# 🎓 Skills Applied
+
+## Automation
+
+* n8n Workflow Automation
+* Scheduled workflows
+* Data processing pipelines
+
+## Artificial Intelligence
+
+* Google Gemini AI
+* Prompt Engineering
+* Text summarization
+* AI-generated reporting
+
+## APIs & Integrations
+
+* RSS Feed Integration
+* Google Sheets API
+* Telegram Bot API
+
+## Programming
+
+* JavaScript
+* JSON data handling
+* Workflow logic
+* Data transformation
+
+## Business Automation
+
+* Automated reporting systems
+* Information management
+* Productivity automation
+
+---
+
+# 📚 Learning Objectives
+
+This project demonstrates:
+
+* Building AI-powered content automation workflows
+* Integrating external data sources with n8n
+* Processing and summarizing large text data
+* Automating daily reporting systems
+* Connecting AI services with productivity tools
+
+---
+
+# 🙌 Acknowledgements
 
 * n8n
 * Google Gemini AI
-* RSS Feed
+* RSS Feed Providers
 * Google Sheets API
 * Telegram Bot API
 
 ---
 
-## 📁 Repository Structure
-
-```text
-AI-News-Summarizer/
-│
-├── README.md
-├── workflow.json
-│
-├── screenshots/
-│   ├── workflow.png
-│   ├── telegram-output.png
-│   └── google-sheets.png
-│
-└── assets/
-```
-
----
-
-## 📸 Screenshots
-
-Include the following screenshots:
-
-* Complete Workflow
-* Google Sheets Output
-* Telegram Notification
-
----
-
-## 🚀 Key Features
-
-* ✅ Scheduled Workflow Automation
-* ✅ RSS Feed Processing
-* ✅ AI-Powered News Summarization
-* ✅ Google Sheets Integration
-* ✅ Telegram Notifications
-* ✅ Automated Daily News Digest
-* ✅ Fully Automated Workflow
-
----
-
-## 🎓 Lessons Learned
-
-Through this project, I gained experience in:
-
-* Building AI-powered automation workflows
-* Integrating RSS feeds with n8n
-* Using Google Gemini for text summarization
-* Aggregating and processing structured data
-* Automating Google Sheets logging
-* Delivering AI-generated reports through Telegram
-
----
-
-## 📈 Impact
-
-This workflow automates the collection and summarization of technology news, helping users stay informed without manually browsing multiple sources. It demonstrates how AI and workflow automation can simplify information gathering and daily reporting.
-
----
-
-## 📜 License
-
-MIT License
-
----
-
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 **Belio C. Sinangote**
 
 BS Information Technology Student
 Cebu Technological University (CTU)
 
-GitHub: [https://github.com/belioautomation](https://github.com/belioautomation)
+GitHub:
 
-This project is part of my **30-Day n8n Automation Portfolio**, showcasing practical workflow automation using n8n, AI, APIs, and automation best practices.
+https://github.com/belioautomation
+
+This project is part of my **30-Day n8n Automation Portfolio**, showcasing practical automation solutions using **n8n, AI integrations, APIs, and business workflow automation**.
+
+---
+
+# 📄 License
+
+MIT License
